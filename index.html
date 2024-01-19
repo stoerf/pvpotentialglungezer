@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 524px;
+            height: 492px;
+        }
+        </style>
+        <title>PV-Potentialanalyse im Skigebiet Glungezer</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Schartenkogellift_5.js"></script>
+        <script src="data/Glungezer2_6.js"></script>
+        <script src="data/Glungezer1_7.js"></script>
+        <script src="data/Liftsttzen1200kWhm_8.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:9
+        }).fitBounds([[47.17106415752496,11.446713257381555],[47.31166870374641,11.666230607087472]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OrthofotoTirol_0');
+        map.getPane('pane_OrthofotoTirol_0').style.zIndex = 400;
+        var layer_OrthofotoTirol_0 = L.WMS.layer("https://gis.tirol.gv.at/arcgis/services/Service_Public/orthofoto/MapServer/WMSServer", "Image_Aktuell_RGB", {
+            pane: 'pane_OrthofotoTirol_0',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_OrthofotoTirol_0);
+        map.createPane('pane_DGM_1m_Glungezer_1');
+        map.getPane('pane_DGM_1m_Glungezer_1').style.zIndex = 401;
+        var img_DGM_1m_Glungezer_1 = 'data/DGM_1m_Glungezer_1.png';
+        var img_bounds_DGM_1m_Glungezer_1 = [[47.21122173074601,11.504559588150073],[47.26588003758478,11.571814055840894]];
+        var layer_DGM_1m_Glungezer_1 = new L.imageOverlay(img_DGM_1m_Glungezer_1,
+                                              img_bounds_DGM_1m_Glungezer_1,
+                                              {pane: 'pane_DGM_1m_Glungezer_1'});
+        bounds_group.addLayer(layer_DGM_1m_Glungezer_1);
+        map.createPane('pane_SichtbarkeitsanalyseSchartenkogellift_2');
+        map.getPane('pane_SichtbarkeitsanalyseSchartenkogellift_2').style.zIndex = 402;
+        var img_SichtbarkeitsanalyseSchartenkogellift_2 = 'data/SichtbarkeitsanalyseSchartenkogellift_2.png';
+        var img_bounds_SichtbarkeitsanalyseSchartenkogellift_2 = [[47.21144912468415,11.504559588150073],[47.242561612894065,11.5499722541765]];
+        var layer_SichtbarkeitsanalyseSchartenkogellift_2 = new L.imageOverlay(img_SichtbarkeitsanalyseSchartenkogellift_2,
+                                              img_bounds_SichtbarkeitsanalyseSchartenkogellift_2,
+                                              {pane: 'pane_SichtbarkeitsanalyseSchartenkogellift_2'});
+        bounds_group.addLayer(layer_SichtbarkeitsanalyseSchartenkogellift_2);
+        map.createPane('pane_SichtbarkeitsanalyseGlungezer2_3');
+        map.getPane('pane_SichtbarkeitsanalyseGlungezer2_3').style.zIndex = 403;
+        var img_SichtbarkeitsanalyseGlungezer2_3 = 'data/SichtbarkeitsanalyseGlungezer2_3.png';
+        var img_bounds_SichtbarkeitsanalyseGlungezer2_3 = [[47.22100122267243,11.513379809677893],[47.25753640208018,11.567025394316778]];
+        var layer_SichtbarkeitsanalyseGlungezer2_3 = new L.imageOverlay(img_SichtbarkeitsanalyseGlungezer2_3,
+                                              img_bounds_SichtbarkeitsanalyseGlungezer2_3,
+                                              {pane: 'pane_SichtbarkeitsanalyseGlungezer2_3'});
+        bounds_group.addLayer(layer_SichtbarkeitsanalyseGlungezer2_3);
+        map.createPane('pane_SichtbarkeitsanalyseGlungezer1_4');
+        map.getPane('pane_SichtbarkeitsanalyseGlungezer1_4').style.zIndex = 404;
+        var img_SichtbarkeitsanalyseGlungezer1_4 = 'data/SichtbarkeitsanalyseGlungezer1_4.png';
+        var img_bounds_SichtbarkeitsanalyseGlungezer1_4 = [[47.23331985167461,11.511262303410687],[47.26581635244634,11.564825646945392]];
+        var layer_SichtbarkeitsanalyseGlungezer1_4 = new L.imageOverlay(img_SichtbarkeitsanalyseGlungezer1_4,
+                                              img_bounds_SichtbarkeitsanalyseGlungezer1_4,
+                                              {pane: 'pane_SichtbarkeitsanalyseGlungezer1_4'});
+        bounds_group.addLayer(layer_SichtbarkeitsanalyseGlungezer1_4);
+        function pop_Schartenkogellift_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Solarpotential [kWh/m²]</th>\
+                        <td>' + (feature.properties['Solarpotential [kWh/m²]'] !== null ? autolinker.link(feature.properties['Solarpotential [kWh/m²]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Höhe [m]</th>\
+                        <td>' + (feature.properties['Höhe [m]'] !== null ? autolinker.link(feature.properties['Höhe [m]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Schartenkogellift_5_0() {
+            return {
+                pane: 'pane_Schartenkogellift_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,156,35,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Schartenkogellift_5');
+        map.getPane('pane_Schartenkogellift_5').style.zIndex = 405;
+        map.getPane('pane_Schartenkogellift_5').style['mix-blend-mode'] = 'normal';
+        var layer_Schartenkogellift_5 = new L.geoJson(json_Schartenkogellift_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Schartenkogellift_5',
+            layerName: 'layer_Schartenkogellift_5',
+            pane: 'pane_Schartenkogellift_5',
+            onEachFeature: pop_Schartenkogellift_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Schartenkogellift_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Schartenkogellift_5);
+        map.addLayer(layer_Schartenkogellift_5);
+        function pop_Glungezer2_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Solarpotential [kWh/m²]</th>\
+                        <td>' + (feature.properties['Solarpotential [kWh/m²]'] !== null ? autolinker.link(feature.properties['Solarpotential [kWh/m²]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Höhe [m]</th>\
+                        <td>' + (feature.properties['Höhe [m]'] !== null ? autolinker.link(feature.properties['Höhe [m]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Glungezer2_6_0() {
+            return {
+                pane: 'pane_Glungezer2_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,61,61,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Glungezer2_6');
+        map.getPane('pane_Glungezer2_6').style.zIndex = 406;
+        map.getPane('pane_Glungezer2_6').style['mix-blend-mode'] = 'normal';
+        var layer_Glungezer2_6 = new L.geoJson(json_Glungezer2_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Glungezer2_6',
+            layerName: 'layer_Glungezer2_6',
+            pane: 'pane_Glungezer2_6',
+            onEachFeature: pop_Glungezer2_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Glungezer2_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Glungezer2_6);
+        map.addLayer(layer_Glungezer2_6);
+        function pop_Glungezer1_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Solarpotential [kWh/m²]</th>\
+                        <td>' + (feature.properties['Solarpotential [kWh/m²]'] !== null ? autolinker.link(feature.properties['Solarpotential [kWh/m²]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Höhe [m]</th>\
+                        <td>' + (feature.properties['Höhe [m]'] !== null ? autolinker.link(feature.properties['Höhe [m]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Glungezer1_7_0() {
+            return {
+                pane: 'pane_Glungezer1_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,251,3,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Glungezer1_7');
+        map.getPane('pane_Glungezer1_7').style.zIndex = 407;
+        map.getPane('pane_Glungezer1_7').style['mix-blend-mode'] = 'normal';
+        var layer_Glungezer1_7 = new L.geoJson(json_Glungezer1_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Glungezer1_7',
+            layerName: 'layer_Glungezer1_7',
+            pane: 'pane_Glungezer1_7',
+            onEachFeature: pop_Glungezer1_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Glungezer1_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Glungezer1_7);
+        map.addLayer(layer_Glungezer1_7);
+        function pop_Liftsttzen1200kWhm_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Solarpotential [kWh/m²]</th>\
+                        <td>' + (feature.properties['Solarpotential [kWh/m²]'] !== null ? autolinker.link(feature.properties['Solarpotential [kWh/m²]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Höhe [m]</th>\
+                        <td>' + (feature.properties['Höhe [m]'] !== null ? autolinker.link(feature.properties['Höhe [m]'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Liftsttzen1200kWhm_8_0() {
+            return {
+                pane: 'pane_Liftsttzen1200kWhm_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(1,170,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Liftsttzen1200kWhm_8');
+        map.getPane('pane_Liftsttzen1200kWhm_8').style.zIndex = 408;
+        map.getPane('pane_Liftsttzen1200kWhm_8').style['mix-blend-mode'] = 'normal';
+        var layer_Liftsttzen1200kWhm_8 = new L.geoJson(json_Liftsttzen1200kWhm_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Liftsttzen1200kWhm_8',
+            layerName: 'layer_Liftsttzen1200kWhm_8',
+            pane: 'pane_Liftsttzen1200kWhm_8',
+            onEachFeature: pop_Liftsttzen1200kWhm_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Liftsttzen1200kWhm_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Liftsttzen1200kWhm_8);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>PV-Potentialanalyse im Skigebiet Glungezer</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+                    this._div.setAttribute("onmouseenter", "abstract.show()");
+                    this._div.setAttribute("onmouseleave", "abstract.hide()");
+                    this.hide();
+                    return this._div;
+                };
+                abstract.hide = function () {
+                    this._div.classList.remove("abstractUncollapsed");
+                    this._div.classList.add("abstract");
+                    this._div.innerHTML = 'i'
+                }
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Diese interaktive Webmap bietet eine Darstellung der Liftstützen im Skigebiet Glungezer, einschließlich ihrer jeweiligen Höhen und des jeweiligen PV-Potentials. Zusätzlich beinhaltet die Karte eine Sichtbarkeitsanalyse der Lifttrassen, um die Freilegung der Liftstützen und potentieller PV-Anlagen analysieren zu können.<br /><br /><br />Sichtbarkeitsanalyse: In allen drei Analysen wird der Beobachtungspunkt ("Observer Point") an der zweiten Seilbahnstütze, beginnend von unten, positioniert und befindet sich auf der Höhe, die dem Durchschnitt der Seilbahnstützen entspricht. Als Points of Interest gelten alle von diesem Punkt aus sichtbaren Areale, die sich ebenfalls auf der durchschnittlichen Höhe der Seilbahnstützen befinden. Dies dient dazu, Hinweise auf mögliche Flächenfreilegungen und die Installation von Photovoltaik-Anlagen auf den Seilbahnstützen zu erhalten. Alle Bereiche, die vom Beobachtungspunkt aus sichtbar sind, werden in der Darstellung weiß hervorgehoben.<br /><br />Höhenberechnung der Liftstützen mittels nDOM = DOM - DGM.<br /><br />Das PV-Potential bezieht sich auf die durschnittliche jährliche globale horizontale Einstrahlung (GHI) im Zeitraum 1994 - 2018.<br /><br /><br />Datenquellen:<br /><br />Solarstrahlung (Global Solar Atlas 2020, Solargis: 2020)<br />DGM und DOM (Land Tirol, TIRIS: 2006 -2009)<br />Orthofoto (Land Tirol, TIRIS: 2023)<br /><br />Ersteller:<br /><br />Stefan Huber, Elias Schneider, Simon Englbrecht<br />';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Liftsttzen1200kWhm_8.png" /> Liftstützen > 1200kWh/m²': layer_Liftsttzen1200kWhm_8,'<img src="legend/Glungezer1_7.png" /> Glungezer 1': layer_Glungezer1_7,'<img src="legend/Glungezer2_6.png" /> Glungezer 2': layer_Glungezer2_6,'<img src="legend/Schartenkogellift_5.png" /> Schartenkogellift': layer_Schartenkogellift_5,"Sichtbarkeitsanalyse Glungezer 1": layer_SichtbarkeitsanalyseGlungezer1_4,"Sichtbarkeitsanalyse Glungezer 2": layer_SichtbarkeitsanalyseGlungezer2_3,"Sichtbarkeitsanalyse Schartenkogellift": layer_SichtbarkeitsanalyseSchartenkogellift_2,"DGM_1m_Glungezer": layer_DGM_1m_Glungezer_1,"Orthofoto Tirol": layer_OrthofotoTirol_0,}).addTo(map);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
